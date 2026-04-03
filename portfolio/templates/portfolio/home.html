@@ -1,0 +1,71 @@
+{% extends 'portfolio/base.html' %}
+{% block title %}{{ profile.name|default:"Chase S. Electona" }} — Creative Portfolio{% endblock %}
+
+{% block content %}
+
+<!-- ── Hero ─────────────────────────────────────────────────────────────────── -->
+<section class="hero-section">
+  <div class="hero-left">
+    <p class="hero-eyebrow fade-up fade-up-d1">// Graphics &amp; Animation Artist</p>
+    <h1 class="hero-name fade-up fade-up-d2">
+      {{ profile.name|default:"Chase S." }}<br>
+      <em>Electona</em>
+    </h1>
+    <p class="hero-tagline fade-up fade-up-d3">{{ profile.tagline|default:"Crafting visual stories through design and motion." }}</p>
+    <div class="hero-cta fade-up fade-up-d4">
+      <a href="{% url 'projects' %}" class="btn-gold">View Works <i class="bi bi-arrow-right"></i></a>
+      <a href="{% url 'contact' %}" class="btn-outline-gold">Get in Touch</a>
+    </div>
+    <div class="hero-scroll-hint">scroll to explore</div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-photo-wrap">
+      {% if profile and profile.photo %}
+        <img src="{{ profile.photo.url }}" alt="{{ profile.name }}" class="hero-photo" />
+      {% else %}
+        <div class="hero-photo-placeholder"><i class="bi bi-person-bounding-box"></i></div>
+      {% endif %}
+    </div>
+    <div class="hero-overlay-text">CE</div>
+  </div>
+</section>
+
+<!-- ── Featured Works ─────────────────────────────────────────────────────────── -->
+{% if featured_projects %}
+<section class="works-section">
+  <div>
+    <div class="section-eyebrow">Selected Projects</div>
+    <h2 class="section-title">Featured Projects</h2>
+    <div class="divider-line"></div>
+    <p class="section-subtitle">A curated selection of graphics and animation projects.</p>
+  </div>
+
+  <div class="works-grid">
+    {% for work in featured_projects %}
+    <div class="work-card">
+      {% if work.image %}
+        <img src="{{ work.image.url }}" alt="{{ work.title }}" />
+      {% else %}
+        <div class="work-card-placeholder">
+          {% if work.work_type == 'animation' %}<i class="bi bi-film"></i>
+          {% elif work.work_type == 'id_design' %}<i class="bi bi-person-vcard"></i>
+          {% elif work.work_type == 'poster' %}<i class="bi bi-image"></i>
+          {% else %}<i class="bi bi-brush"></i>{% endif %}
+        </div>
+      {% endif %}
+      <div class="work-card-overlay">
+        <div class="work-card-type">{{ work.get_work_type_display }}</div>
+        <div class="work-card-title">{{ work.title }}</div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div style="margin-top:2.5rem;">
+    <a href="{% url 'projects' %}" class="btn-outline-gold">See All Projects <i class="bi bi-arrow-right"></i></a>
+  </div>
+</section>
+{% endif %}
+
+{% endblock %}

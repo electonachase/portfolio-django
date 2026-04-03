@@ -1,0 +1,63 @@
+{% extends 'portfolio/base.html' %}
+{% block title %}Contact — {{ profile.name|default:"Chase S. Electona" }}{% endblock %}
+
+{% block content %}
+<section class="contact-section">
+  <div class="contact-left">
+    <div class="section-eyebrow">Get In Touch</div>
+    <h1 class="contact-big-text">Let's create something <em>beautiful</em> together.</h1>
+    <div class="divider-line"></div>
+
+    {% if profile and profile.email %}
+    <a href="mailto:{{ profile.email }}" class="contact-detail">
+      <i class="bi bi-envelope-fill"></i> {{ profile.email }}
+    </a>
+    {% endif %}
+    {% if profile and profile.instagram %}
+    <a href="{{ profile.instagram }}" target="_blank" class="contact-detail">
+      <i class="bi bi-instagram"></i> Instagram
+    </a>
+    {% endif %}
+    {% if profile and profile.facebook %}
+    <a href="{{ profile.facebook }}" target="_blank" class="contact-detail">
+      <i class="bi bi-facebook"></i> Facebook
+    </a>
+    {% endif %}
+
+    <div style="margin-top:3rem;padding-top:2rem;border-top:1px solid var(--border);">
+      <div style="font-family:var(--font-mono);font-size:.68rem;color:var(--gold);letter-spacing:.15em;text-transform:uppercase;margin-bottom:.75rem;">Response Time</div>
+      <p style="color:var(--text-muted);font-size:.875rem;line-height:1.7;">I typically respond within 24–48 hours. For urgent inquiries, feel free to reach out directly via email.</p>
+    </div>
+  </div>
+
+  <div class="contact-right">
+    <div class="section-eyebrow" style="margin-bottom:2rem;">Send a Message</div>
+    <form method="post" action="{% url 'contact' %}">
+      {% csrf_token %}
+      <div class="form-group">
+        <label class="form-label" for="id_name">Your Name</label>
+        {{ form.name }}
+        {% if form.name.errors %}<div style="color:#e05252;font-size:.8rem;margin-top:.4rem;">{{ form.name.errors.0 }}</div>{% endif %}
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="id_email">Email Address</label>
+        {{ form.email }}
+        {% if form.email.errors %}<div style="color:#e05252;font-size:.8rem;margin-top:.4rem;">{{ form.email.errors.0 }}</div>{% endif %}
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="id_subject">Subject</label>
+        {{ form.subject }}
+        {% if form.subject.errors %}<div style="color:#e05252;font-size:.8rem;margin-top:.4rem;">{{ form.subject.errors.0 }}</div>{% endif %}
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="id_message">Message</label>
+        {{ form.message }}
+        {% if form.message.errors %}<div style="color:#e05252;font-size:.8rem;margin-top:.4rem;">{{ form.message.errors.0 }}</div>{% endif %}
+      </div>
+      <button type="submit" class="btn-gold" style="width:100%;justify-content:center;margin-top:.5rem;">
+        Send Message <i class="bi bi-send"></i>
+      </button>
+    </form>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Chase S. Electona{% endblock %}</title>
+
+  <!-- Google Fonts: Cormorant Garamond + DM Sans -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'portfolio/css/style.css' %}" />
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<!-- ── Grain overlay ─────────────────────────────────────────────────────── -->
+<div class="grain-overlay" aria-hidden="true"></div>
+
+<!-- ── Side Nav ─────────────────────────────────────────────────────────── -->
+<nav class="sidenav" id="sideNav">
+  <div class="sidenav-logo">
+    <a href="{% url 'home' %}" class="logo-mark">
+      <span class="logo-c">C</span><span class="logo-e">E</span>
+    </a>
+  </div>
+
+  <ul class="sidenav-links">
+    <li><a href="{% url 'home' %}" class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}"><span class="nav-num">01</span><span class="nav-label">Home</span></a></li>
+    <li><a href="{% url 'about' %}" class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}"><span class="nav-num">02</span><span class="nav-label">About</span></a></li>
+    <li><a href="{% url 'projects' %}" class="nav-link {% if request.resolver_match.url_name == 'projects' %}active{% endif %}"><span class="nav-num">03</span><span class="nav-label">Projects</span></a></li>
+    <li><a href="{% url 'skills' %}" class="nav-link {% if request.resolver_match.url_name == 'skills' %}active{% endif %}"><span class="nav-num">04</span><span class="nav-label">Skills</span></a></li>
+    <li><a href="{% url 'education' %}" class="nav-link {% if request.resolver_match.url_name == 'education' %}active{% endif %}"><span class="nav-num">05</span><span class="nav-label">Education</span></a></li>
+    <li><a href="{% url 'contact' %}" class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}"><span class="nav-num">06</span><span class="nav-label">Contact</span></a></li>
+  </ul>
+
+  <div class="sidenav-socials">
+    {% if profile and profile.instagram %}<a href="{{ profile.instagram }}" target="_blank" title="Instagram"><i class="bi bi-instagram"></i></a>{% endif %}
+    {% if profile and profile.facebook %}<a href="{{ profile.facebook }}" target="_blank" title="Facebook"><i class="bi bi-facebook"></i></a>{% endif %}
+    {% if profile and profile.email %}<a href="mailto:{{ profile.email }}" title="Email"><i class="bi bi-envelope-fill"></i></a>{% endif %}
+  </div>
+</nav>
+
+<!-- ── Mobile Top Bar ─────────────────────────────────────────────────────── -->
+<header class="topbar" id="topBar">
+  <a href="{% url 'home' %}" class="topbar-logo"><span class="logo-c">C</span><span class="logo-e">E</span></a>
+  <button class="burger" id="burgerBtn" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <ul>
+    <li><a href="{% url 'home' %}">Home</a></li>
+    <li><a href="{% url 'about' %}">About</a></li>
+    <li><a href="{% url 'projects' %}">Projects</a></li>
+    <li><a href="{% url 'skills' %}">Skills</a></li>
+    <li><a href="{% url 'education' %}">Education</a></li>
+    <li><a href="{% url 'contact' %}">Contact</a></li>
+  </ul>
+</div>
+
+<!-- ── Messages ───────────────────────────────────────────────────────────── -->
+{% if messages %}
+<div class="toast-container">
+  {% for message in messages %}
+  <div class="toast-msg toast-{{ message.tags }}">{{ message }}</div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<!-- ── Main Content ───────────────────────────────────────────────────────── -->
+<main class="main-content">
+  {% block content %}{% endblock %}
+</main>
+
+<!-- ── Footer ─────────────────────────────────────────────────────────────── -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span class="footer-name">{% if profile %}{{ profile.name }}{% else %}Chase S. Electona{% endif %}</span>
+    <span class="footer-sep">·</span>
+    <span class="footer-craft">Graphics &amp; Animation</span>
+    <span class="footer-sep">·</span>
+    <small>&copy; {% now "Y" %} All rights reserved.</small>
+  </div>
+</footer>
+
+{% load static %}
+<script src="{% static 'portfolio/js/main.js' %}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

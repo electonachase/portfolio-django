@@ -1,0 +1,54 @@
+{% extends 'portfolio/base.html' %}
+{% block title %}Projects — {{ profile.name|default:"Chase S. Electona" }}{% endblock %}
+
+{% block content %}
+<section class="page-section">
+  <div class="section-eyebrow">Projects</div>
+  <h1 class="section-title">My Projects</h1>
+  <div class="divider-line"></div>
+  <p class="section-subtitle">Graphic design, ID creation, posters, and animation projects.</p>
+
+  <!-- Filter -->
+  <div class="filter-bar" style="margin-top:2.5rem;">
+    <a href="{% url 'projects' %}" class="filter-btn {% if not active_filter %}active{% endif %}">All</a>
+    {% for val, label in work_types %}
+    <a href="{% url 'projects' %}?type={{ val }}" class="filter-btn {% if active_filter == val %}active{% endif %}">{{ label }}</a>
+    {% endfor %}
+  </div>
+
+  <div class="works-list">
+    {% for project in projects %}
+    <div class="work-card" style="aspect-ratio:4/3;">
+      {% if project.image %}
+        <img src="{{ project.image.url }}" alt="{{ project.title }}" />
+      {% else %}
+        <div class="work-card-placeholder" style="background:var(--ink2);">
+          {% if project.work_type == 'animation' %}<i class="bi bi-film"></i>
+          {% elif project.work_type == 'id_design' %}<i class="bi bi-person-vcard"></i>
+          {% elif project.work_type == 'poster' %}<i class="bi bi-image"></i>
+          {% elif project.work_type == 'logo' %}<i class="bi bi-badge-cc"></i>
+          {% else %}<i class="bi bi-brush"></i>{% endif %}
+        </div>
+      {% endif %}
+      <div class="work-card-overlay">
+        <div class="work-card-type">{{ project.get_work_type_display }}</div>
+        <div class="work-card-title">{{ project.title }}</div>
+        <div style="font-size:.78rem;color:var(--text-muted);margin-top:.35rem;">{{ project.description|truncatewords:12 }}</div>
+        <div style="margin-top:.75rem;display:flex;gap:.5rem;flex-wrap:wrap;">
+          {% for tool in project.get_tools_list %}
+          <span style="font-family:var(--font-mono);font-size:.65rem;color:var(--gold);background:rgba(201,168,76,.12);padding:.15rem .5rem;border:1px solid rgba(201,168,76,.2);">{{ tool }}</span>
+          {% endfor %}
+        </div>
+        {% if project.behance_link %}
+        <a href="{{ project.behance_link }}" target="_blank" style="display:inline-flex;align-items:center;gap:.4rem;margin-top:.75rem;font-size:.75rem;color:var(--gold);text-decoration:none;">
+          <i class="bi bi-behance"></i> View on Behance
+        </a>
+        {% endif %}
+      </div>
+    </div>
+    {% empty %}
+    <div style="color:var(--text-muted);font-style:italic;padding:3rem 0;">No projects added yet. Add them from the admin panel.</div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

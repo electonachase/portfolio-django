@@ -1,0 +1,27 @@
+{% extends 'portfolio/base.html' %}
+{% block title %}Education — {{ profile.name|default:"Chase S. Electona" }}{% endblock %}
+
+{% block content %}
+<section class="education-section">
+  <div class="section-eyebrow">Background</div>
+  <h1 class="section-title">Education</h1>
+  <div class="divider-line"></div>
+  <p class="section-subtitle">Academic journey and formal training.</p>
+
+  <div class="edu-timeline">
+    {% for edu in education_list %}
+    <div class="edu-item">
+      <div class="edu-year">{{ edu.get_year_range }}</div>
+      <div>
+        <div class="edu-degree">{{ edu.degree }}</div>
+        <div class="edu-school"><i class="bi bi-building" style="color:var(--gold);margin-right:.4rem;"></i>{{ edu.school }}</div>
+        {% if edu.field_of_study %}<div class="edu-field">{{ edu.field_of_study }}</div>{% endif %}
+        {% if edu.description %}<p class="edu-desc">{{ edu.description }}</p>{% endif %}
+      </div>
+    </div>
+    {% empty %}
+    <div style="color:var(--text-muted);font-style:italic;">No education records yet. Add them from the admin panel.</div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
